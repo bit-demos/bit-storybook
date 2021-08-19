@@ -6,6 +6,10 @@ This way you can use Bit as a platform for managing component lifecycle and inde
 
 ![Bit and Storybook render a component](diagram.png)
 
+Rendering a story in a Bit Component Composition
+
+![composition render story](bit-story.png)
+
 > **Note:** Bit can manage the lifecycle of non-UI components like Hook (React), Node (Utils, SDKs) and others. These components are likely not to be rendered in Storybook, but can still be used in stories as needed.
 
 If you would like to clone the project to take it for a test run make sure you have [bit installed](https://harmony-docs.bit.dev/docs/bit/installation).
