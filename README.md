@@ -1,82 +1,107 @@
-# Steps to get this demo
+# Bit <> Storybook
+
+You can run Bit and Storybook in the same projects and render the UI components in both tools. As Bit and Storybook both use [Component Story Format](https://github.com/ComponentDriven/csf) for rendering, this means that we can use stories in compositions and vice versa.
+
+This way you can use Bit as a platform for managing component lifecycle and independent publishing, and use Storybook for its more advanced rendering features.
+
+![Bit and Storybook render a component](diagram.png)
+
+> **Note:** Bit can manage the lifecycle of non-UI components like Hook (React), Node (Utils, SDKs) and others. These components are likely not to be rendered in Storybook, but can still be used in stories as needed.
+
+f you would like to import(clone) the project to take it for a test run make sure you have [bit installed](https://harmony-docs.bit.dev/docs/bit/installation).
 
 ```sh
-git clone ...
+git clone git@github.com:bit-demos/bit-storybook.git
 cd bit-storybook
 bit install
-yarn storybook
+```
+
+You can run any of the servers to show components:
+
+* Run the Bit server
+
+```sh
 bit start
 ```
 
-## Files of interest
-
-### `scope/my-component/my-component.composition.tsx`
-
-Component composition file contains a basic composition and also renders a story.
-
-### `scope/my-component/my-component.stories.tsx`
-
-Component story file contains a basic story and also renders a composition.
-
-## Steps to reproduce this repository
+* Run the Storybook server
 
 ```sh
-bit new react-workspace bit-storybook
-cd bit-storybook
+yarn storybook
+```
+
+## Rendering a `composition` in a `story`
+
+You can directly import a composition and render in a story:
+
+```js
+import { BasicComposition } from './my-component.composition';
+
+export const FromCompositionStory = () => (
+  <BasicComposition />
+);
+```
+
+> Example in `scope/my-component/my-component.stories.tsx`
+
+## Rendering a `story` in a `composition`
+
+You can directly import a story and render in a composition:
+
+```js
+import { BasicStory } from './my-component.stories';
+
+export const FromStorybookComposition = () => (
+  <BasicStory />
+);
+```
+
+> Example in `scope/my-component/my-component.composition.tsx`
+
+## Adding storybook to a workspace with Bit
+
+If you don't have a Bit workspace, run this command:
+
+```sh
+bit new react-workspace my-workspace
+cd my-workspace
+```
+
+To use storybook we'll need to create a `package.json` file for it's `init` command to run:
+
+```sh
 npm init -y
 npx sb init
-bit create react my-component
+```
+
+Storybook will be installed as a dependency of the workspace, generate base components and add a configuration.  
+We should remove the template Storybook components:
+
+```sh
 rm -rf stories
 ```
 
-then:
+As part of it's setup process, Storybook adds some dependencies to the `package.json` file. We'll need to:
 
-1. edit `.storybook/main.js` and make it look like this:
+1. Open `package.json` file and cut all dependencies from there.
+1. Open `workspace.json` file and add the dependencies to the dependency policy.
 
-  ```js
-  module.exports = {
-    "stories": [
-      "../**/*.stories.mdx",
-      "../**/*.stories.@(js|jsx|ts|tsx)"
-    ],
-    "addons": [
-      "@storybook/addon-links",
-      "@storybook/addon-essentials",
-    ]
-  }
-  ```
+The list of dependencies varies between different Storybook setups according to the framework.
 
-1. open `package.json` and remove all `dependencies` and `devDependencies`.
-1. open `workspace.jsonc` and put the following content:
+The last step is to configure Storybook to find story files across the repository. Open the `.storybook/main.js` and change the `stories` array to:
 
-  ```js
-  "teambit.dependencies/dependency-resolver": {
-    "packageManager": "teambit.dependencies/pnpm",
-    "policy": {
-      "dependencies": {
-        "@babel/core": "^7.13.15",
-        "@storybook/addon-actions": "^6.2.7",
-        "@storybook/addon-essentials": "^6.2.7",
-        "@storybook/addon-links": "^6.2.7",
-        "@storybook/preset-typescript": "3.0.0",
-        "@storybook/react": "^6.2.7",
-        "@testing-library/react": "^10.4.7",
-        "@types/classnames": "2.2.11",
-        "@types/react": "16.9.43",
-        "@types/react-dom": "16.9.10",
-        "babel-loader": "^8.2.2",
-        "classnames": "2.3.1",
-      },
-      "peerDependencies": {
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1"
-      }
-    }
-  ```
+```js
+module.exports = {
+  "stories": [
+    "../**/*.stories.mdx",
+    "../**/*.stories.@(js|jsx|ts|tsx)"
+  ],
+}
+```
+
+Once you have the setup complete, remove `node_modules` and install workspace dependencies with Bit.
 
 ```sh
 rm -rf node_modules
 bit install
-yarn storybook
-bit start
 ```
