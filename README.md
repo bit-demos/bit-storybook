@@ -92,7 +92,7 @@ As part of it's setup process, Storybook adds some dependencies to the `package.
 
 > The list of dependencies varies between different Storybook setups according to the framework.
 
-The last step is to configure Storybook to find story files across the repository. Open the `.storybook/main.js` and change the `stories` array to:
+Next configure Storybook to find story files across the repository. Open `.storybook/main.js` and change `stories` array to:
 
 ```js
 module.exports = {
