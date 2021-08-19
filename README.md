@@ -58,7 +58,7 @@ export const FromStorybookComposition = () => (
 
 > Example in `scope/my-component/my-component.composition.tsx`
 
-## Adding storybook to a workspace with Bit
+## Adding storybook to a Bit workspace
 
 If you don't have a Bit workspace, run this command:
 
@@ -105,3 +105,5 @@ Once you have the setup complete, remove `node_modules` and install workspace de
 rm -rf node_modules
 bit install
 ```
+
+Now you can start adding `*.stories.*` files to any of your components.
