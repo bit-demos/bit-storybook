@@ -90,9 +90,9 @@ As part of it's setup process, Storybook adds some dependencies to the `package.
 1. Open `package.json` file and cut all dependencies from there.
 1. Open `workspace.json` file and add the dependencies to the dependency policy.
 
-The list of dependencies varies between different Storybook setups according to the framework.
+> The list of dependencies varies between different Storybook setups according to the framework.
 
-The last step is to configure Storybook to find story files across the repository. Open the `.storybook/main.js` and change the `stories` array to:
+Next configure Storybook to find story files across the repository. Open `.storybook/main.js` and change `stories` array to:
 
 ```js
 module.exports = {
